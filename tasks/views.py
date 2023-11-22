@@ -265,7 +265,7 @@ def listar_contratos(request, dni_cliente=None):
             )
 
     # Paginación
-    paginator = Paginator(contratos_list, 1)
+    paginator = Paginator(contratos_list, 10)
     page_number = request.GET.get('page')
     contratos = paginator.get_page(page_number)
 
@@ -340,7 +340,7 @@ def eliminar_contrato(request, id_contrato, dni_cliente):
         
         return redirect('listar_contratos_cliente', dni_cliente=dni_cliente)
 
-    return render(request, 'convenios.html', {'contrato': contrato, 'dni_cliente': dni_cliente})
+    return render(request, 'contratos.html', {'contrato': contrato, 'dni_cliente': dni_cliente})
 
 
 
@@ -454,10 +454,11 @@ def crear_convenio(request, id_contrato):
     if request.method == 'POST':
         form = ConvenioForm(request.POST)
         if form.is_valid():
-            nuevo_convenio = form.save(commit=False)
-            nuevo_convenio.id_contrato = contrato
-            nuevo_convenio.save()
-            return redirect('listar_convenios', id_contrato=id_contrato)
+         nuevo_convenio = form.save(commit=False)
+         nuevo_convenio.id_contrato = contrato
+         nuevo_convenio.save()
+         messages.success(request, 'Convenio creado correctamente.')
+        return redirect('listar_convenios', id_contrato=id_contrato)
     else:
         form = ConvenioForm(initial={'id_contrato': contrato})
     return render(request, 'convenios.html', {'form': form, 'id_contrato': id_contrato})
@@ -471,8 +472,9 @@ def editar_convenio(request, id_convenio):
     if request.method == 'POST':
         form = ConvenioForm(request.POST, instance=convenio)
         if form.is_valid():
-            form.save()
-            return redirect('listar_convenios', id_contrato=id_contrato)
+         form.save()
+         messages.success(request, 'Convenio editado correctamente.')
+         return redirect('listar_convenios', id_contrato=id_contrato)
     else:
         form = ConvenioForm(instance=convenio)
 
@@ -488,5 +490,5 @@ def eliminar_convenio(request, id_convenio):
     id_contrato = convenio.id_contrato.id_contrato  # Asegúrate de que este es el campo correcto en tu modelo
     if request.method == 'POST':
         convenio.delete()
-        return redirect('listar_convenios', id_contrato=id_contrato)
+    messages.success(request, 'Convenio eliminado correctamente.')
     return render(request, 'convenios.html', {'convenio_a_eliminar': convenio})

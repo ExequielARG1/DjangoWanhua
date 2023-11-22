@@ -1,6 +1,8 @@
+
 {% extends "base.html" %}
 
 {% block content %}
+<script src="https://kit.fontawesome.com/640439664e.js" crossorigin="anonymous"></script>
 <style>
     /* Estilo personalizado para el fondo oscuro marino */
     body {
@@ -31,6 +33,30 @@
     .btn-primary:hover {
         background-color: #ff5733 !important; /* Cambio de color al pasar el mouse (naranja) */
     }
+
+    /* Estilo para quitar el delineado negro de los input */
+    form input {
+        background-color: #f2f2f2;
+        border: 1px solid #7a7a7a;
+        border-radius: 5px;
+        padding: 10px;
+        padding-left: 40px;
+        font-size: 2em;
+        letter-spacing: 1px;
+        color: #000;
+    }
+
+    /* Estilo para centrar los inputs */
+    form {
+        text-align: center;
+    }
+
+    /* Estilo para separar las etiquetas de los campos de entrada */
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        text-align: left; /* Alinea el texto a la izquierda */
+    }
 </style>
 
 <div class="container mt-5">
@@ -42,12 +68,22 @@
                 </div>
                 <div class="card-body">
                     <form id="login-form" action="/login/" method="post">
+                        <i class="fa fa-user-circle-o fa-10x" style="margin-top: 0.18em;"></i>
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}" style="margin: 2em 0 0.3em 0; font-size: 1.5em;"><b>Usuario:</b></label>
+                            {{ form.username }}
                         </div>
-                        {{error}}
+                        <div class="form-group">
+                            <label for="{{ form.password.id_for_label }}" style="margin: 0 0 0.3em 0; font-size: 1.5em;"><b>Contraseña:</b></label>
+                            {{ form.password }}
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.7em;"><i class="fa fa-arrow-right fa-4x" aria-hidden="true"></i></button>
+                        </div>
+                        {{ error }}
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <p style="margin: 0; color: #7a7a7a;">Si tienes problemas para iniciar sesión contacta a tus superiores</p>
                     </form>
                 </div>
             </div>

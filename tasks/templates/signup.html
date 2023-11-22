@@ -1,7 +1,169 @@
+
 {% extends 'base.html' %}
 {% block content %}
+<style>
+    /* Estilo personalizado para el fondo oscuro marino */
+    body {
+        background-color: #001f3f !important; /* Oscuro marino */
+    }
 
-<h1>hola</h1>
+    /* Estilo personalizado para la tarjeta */
+    .card {
+        border: none;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #fff; /* Fondo blanco */
+    }
+
+    /* Estilo personalizado para el encabezado de la tarjeta */
+    .card-header {
+        background-color: #001f3f !important; /* Oscuro marino */
+        color: #fff; /* Texto blanco */
+        border: none;
+    }
+
+    /* Estilo personalizado para el botón */
+    .btn-primary {
+        background-color: #001f3f !important; /* Oscuro marino */
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff5733 !important; /* Cambio de color al pasar el mouse (naranja) */
+    }
+
+    /* Estilo para quitar el delineado negro de los input */
+    form input {
+        background-color: #f2f2f2;
+        border: 1px solid #7a7a7a;
+        border-radius: 5px;
+        padding: 10px;
+        padding-left: 40px;
+        font-size: 2em;
+        letter-spacing: 1px;
+        color: #000;
+    }
+
+    /* Estilo para centrar los inputs */
+    form {
+        text-align: center;
+    }
+
+    /* Estilo para separar las etiquetas de los campos de entrada */
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        text-align: left; /* Alinea el texto a la izquierda */
+    }
+
+    /* Eliminar estilo del checkboxk */
+    .checkbox-container {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .checkbox-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: transparent; /* Cambiado a transparente */
+    }
+
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: transparent; /* Cambiado a transparente */
+    }
+
+    .checkmark:before {
+        content: '\f06e'; /* Unicode character for FontAwesome eye icon */
+        font-family: 'Font Awesome 5 Free';
+        font-size: 18px;
+        color: #555;
+        position: absolute;
+        display: block;
+        top: 4px;
+        left: 5px;
+    }
+
+    .checkbox-container input:checked ~ .checkmark:before {
+        content: '\f070'; /* Unicode character for FontAwesome eye-slash icon */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Registro en WANHUA</h2>
+                </div>
+                <div class="card-body">
+                    <form id="register-form" action="/register/" method="post">
+                        <!-- Aquí deberías incluir los campos específicos del formulario de registro -->
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}" style="margin: 2em 0 0.3em 0; font-size: 1.5em;"><b>Usuario:</b></label>
+                            {{ form.username }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}" style="margin: 0 0 0.3em 0; font-size: 1.5em;">
+                                <b>Contraseña:</b>
+                            </label>
+                            {{ form.password1 }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}" style="margin: 0 0 0.3em 0; font-size: 1.5em;">
+                                <b>Confirmar contraseña:</b>
+                            </label>
+                            {{ form.password2 }}
+                        </div>
+                        <div style="margin: 0; padding-right: 2em; ">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="show-password-checkbox">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1.7em;"><i class="fa fa-arrow-right fa-4x" aria-hidden="true"></i></button>
+                        </div>
+                        {{ error }}
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <p style="margin: 0; color: #7a7a7a;">Si tienes problemas para registrarte, contacta a tus superiores</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var passwordInput1 = document.getElementById("{{ form.password1.id_for_label }}");
+        var passwordInput2 = document.getElementById("{{ form.password2.id_for_label }}");
+        var showPasswordCheckbox = document.getElementById("show-password-checkbox");
+
+        showPasswordCheckbox.addEventListener("change", function () {
+            if (showPasswordCheckbox.checked) {
+                passwordInput1.type = "text";
+                passwordInput2.type = "text";
+            } else {
+                passwordInput1.type = "password";
+                passwordInput2.type = "password";
+            }
+        });
+    });
+</script>
+
+
+
+<!--<h1>hola</h1>
 <p>sapo sin cola</p>
 
 <form method="post">
@@ -11,6 +173,6 @@
         Signup
     </button>
     {{error}}
-</form>
+</form>-->
 
 {% endblock %}
