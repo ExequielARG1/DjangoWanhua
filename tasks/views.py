@@ -514,5 +514,18 @@ def listar_todos_los_contratos(request):
 
 
 def listar_convenios_clientes(request):
-    convenios_list = Convenio.objects.select_related('id_contrato').all()
-    return render(request, 'convenios_clientes.html', {'convenios': convenios_list})
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        convenios_list = Convenio.objects.select_related('id_contrato').filter(
+            Q(id_convenio__icontains=search_query) | 
+            Q(id_contrato__id_contrato__icontains=search_query)
+        )
+    else:
+        convenios_list = Convenio.objects.select_related('id_contrato').all()
+
+    paginator = Paginator(convenios_list, 10)  # Ajusta el número de convenios por página
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'convenios_clientes.html', {'page_obj': page_obj, 'search_query': search_query})

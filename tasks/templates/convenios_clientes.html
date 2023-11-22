@@ -3,8 +3,19 @@
 {% block content %}
 <div class="container mt-5">
     <h1>Lista de Convenios de Clientes</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form method="get" action="" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por ID de convenio o contrato" value="{{ search_query }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </form>
+
     <div class="row">
-        {% for convenio in convenios %}
+        {% for convenio in page_obj %}  <!-- Asegúrate de iterar sobre 'page_obj' -->
             <div class="col-md-4 mb-3">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body">
@@ -19,6 +30,29 @@
         {% empty %}
             <p>No se encontraron convenios.</p>
         {% endfor %}
+    </div>
+
+    <!-- Paginación simplificada -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">Anterior</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }}</span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">Siguiente</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 </div>
 
