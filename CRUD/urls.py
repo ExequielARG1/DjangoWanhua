@@ -20,6 +20,8 @@ urlpatterns = [
     path('propiedades/<int:id>/delete/', views.propiedades_delete, name='propiedades_delete'),
     # En tu urls.py
 path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedades_clientes_todas'),
+    
+    path('contratos_clientes/', views.listar_todos_los_contratos, name='contratos_clientes'),
 
     path('contratos/', views.listar_contratos, name='listar_contratos'),
     path('contratos/cliente/<str:dni_cliente>/', views.listar_contratos, name='listar_contratos_cliente'),

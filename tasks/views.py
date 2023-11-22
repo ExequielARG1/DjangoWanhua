@@ -213,35 +213,6 @@ def propiedades_delete(request, id):
         return redirect('propiedades_list_by_dni', dni_cliente=propiedad.cliente.dni)
     return render(request, 'propiedades.html', {'propiedad_to_delete': propiedad, 'cliente': propiedad.cliente})
 
-def listar_contratos_cliente(request, dni_cliente):
-    search_query = request.GET.get('search')
-    contratos = Contrato.objects.filter(cliente__dni=dni_cliente)
-
-    if search_query:
-        contratos = contratos.filter(
-            Q(id_contrato__icontains=search_query) |
-            Q(cliente__nombre_cliente__icontains=search_query) |
-            Q(cliente__dni__icontains=search_query) |
-            Q(propiedades__ID_prop__icontains=search_query) |
-            Q(propiedades__direccion__icontains=search_query) |
-            Q(fecha_inicio__icontains=search_query) |
-            Q(fecha_fin__icontains=search_query) |
-            Q(descripcion__icontains=search_query)
-        )
-
-    paginator = Paginator(contratos, 1)
-    page = request.GET.get('page')
-
-    try:
-        contratos_paginated = paginator.page(page)
-    except PageNotAnInteger:
-        contratos_paginated = paginator.page(1)
-    except EmptyPage:
-        contratos_paginated = paginator.page(paginator.num_pages)
-
-    dni_cliente = dni_cliente  # Puedes mantenerlo si lo necesitas
-    return render(request, 'contratos.html', {'contratos': contratos_paginated, 'dni_cliente': dni_cliente})
-
 
 
 def listar_contratos(request, dni_cliente=None):
@@ -492,3 +463,51 @@ def eliminar_convenio(request, id_convenio):
         convenio.delete()
     messages.success(request, 'Convenio eliminado correctamente.')
     return render(request, 'convenios.html', {'convenio_a_eliminar': convenio})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def listar_todos_los_contratos(request):
+    search_query = request.GET.get('search', '')
+
+    # Filtrar contratos basados en la búsqueda
+    if search_query:
+        contratos = Contrato.objects.select_related('cliente', 'propiedades').filter(
+            Q(id_contrato__icontains=search_query) |
+            Q(cliente__nombre_cliente__icontains=search_query) |
+            Q(cliente__dni__icontains=search_query)
+        )
+    else:
+        contratos = Contrato.objects.select_related('cliente', 'propiedades').all()
+
+    # Paginación
+    paginator = Paginator(contratos, 3)  # 10 contratos por página
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    contratos_enriched = []
+    for contrato in page_obj:
+        contrato_info = {
+            'id_contrato': contrato.id_contrato,
+            'nombre_cliente': contrato.cliente.nombre_cliente,
+            'dni_cliente': contrato.cliente.dni,
+            'direccion_propiedad': contrato.propiedades.direccion,
+            'fecha_inicio': contrato.fecha_inicio_formatted(),
+            'fecha_fin': contrato.fecha_fin_formatted(),
+            'descripcion': contrato.descripcion,
+            'tiene_convenios': contrato.tiene_convenios
+        }
+        contratos_enriched.append(contrato_info)
+
+    return render(request, 'contratos_clientes.html', {'contratos': contratos_enriched, 'page_obj': page_obj})
