@@ -511,3 +511,8 @@ def listar_todos_los_contratos(request):
         contratos_enriched.append(contrato_info)
 
     return render(request, 'contratos_clientes.html', {'contratos': contratos_enriched, 'page_obj': page_obj})
+
+
+def listar_convenios_clientes(request):
+    convenios_list = Convenio.objects.select_related('id_contrato').all()
+    return render(request, 'convenios_clientes.html', {'convenios': convenios_list})

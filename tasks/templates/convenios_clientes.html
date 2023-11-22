@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Lista de Convenios de Clientes</h1>
+    <div class="row">
+        {% for convenio in convenios %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Convenio ID: {{ convenio.id_convenio }}</h5>
+                        <p class="card-text"><strong>Contrato ID:</strong> {{ convenio.id_contrato.id_contrato }}</p>
+                        <p class="card-text"><strong>Fecha de Inicio:</strong> {{ convenio.fecha_inicio }}</p>
+                        <p class="card-text"><strong>Fecha de Fin:</strong> {{ convenio.fecha_fin }}</p>
+                        <p class="card-text"><strong>Descripción:</strong> {{ convenio.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No se encontraron convenios.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Estilos personalizados y animaciones -->
+<style>
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+</style>
+
+{% endblock %}

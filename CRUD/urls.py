@@ -30,6 +30,9 @@ path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedade
     path('contratos/eliminar/<int:id_contrato>/<str:dni_cliente>/', views.eliminar_contrato, name='eliminar_contrato'),
 
     path('contratos/generar_pdf/<int:id_contrato>/', views.generar_contrato_pdf, name='generar_contrato_pdf'),
+
+    path('convenios_clientes/', views.listar_convenios_clientes, name='listar_convenios_clientes'),
+
     path('convenios/listar/<int:id_contrato>/', views.listar_convenios, name='listar_convenios'),
     path('convenios/crear/<int:id_contrato>/', views.crear_convenio, name='crear_convenio'),
     path('convenios/editar/<int:id_convenio>/', views.editar_convenio, name='editar_convenio'),
