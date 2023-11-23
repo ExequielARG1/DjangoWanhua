@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
-
+{%load static%}
 {% block content %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -8,6 +8,20 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<script>
+    $(document).ready(function() {
+        if (CKEDITOR.instances['id_descripcion']) {
+            CKEDITOR.instances['id_descripcion'].destroy();
+        }
+        CKEDITOR.replace('id_descripcion', {
+            toolbar: 'full',
+            height: 300,
+            width: '100%'
+        });
+    });
+</script>
 
 <div class="container mt-5">
     <!-- Botón de Volver Atrás -->
@@ -99,7 +113,7 @@
                             <td>{{ contrato.propiedades.direccion }}</td>
                             <td>{{ contrato.fecha_inicio }}</td>
                             <td>{{ contrato.fecha_fin }}</td>
-                            <td>{{ contrato.descripcion }}</td>
+                            <td>{{ contrato.descripcion|safe }}</td>
                             <td>
                                 <a href="{% url 'actualizar_contrato' contrato.id_contrato contrato.cliente.dni %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
                                 <a href="{% url 'generar_contrato_pdf' id_contrato=contrato.id_contrato %}" class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i> PDF</a>
@@ -223,5 +237,6 @@
     });
 });
     });
+    
 </script>
 {% endblock %}

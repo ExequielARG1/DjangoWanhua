@@ -14,7 +14,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar-custom {
-            background-color: #003366;  /* Azul oscuro marino */
+            background-color: #001f3f;  /* Azul oscuro marino */
             color: white;
         }
         .card {
@@ -27,7 +27,7 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         }
         .card-header {
-            background-color: #003366;  /* Azul oscuro marino */
+            background-color: #001f3f;  /* Azul oscuro marino */
             color: white;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
@@ -36,11 +36,11 @@
             background-color: white;
         }
         .pagination .page-link {
-            color: #003366; /* Azul oscuro marino */
+            color: #001f3f; /* Azul oscuro marino */
         }
         .pagination .page-item.active .page-link {
-            background-color: #003366; /* Azul oscuro marino */
-            border-color: #003366;
+            background-color: #001f3f; /* Azul oscuro marino */
+            border-color: #001f3f;
         }
     </style>
 </head>
@@ -65,15 +65,15 @@
                 <div class="col-md-4 mb-4">
                     <div class="card">
                         <div class="card-header">
-                            Contrato ID: {{ contrato.id_contrato }}
+                            <strong>Contrato ID:</strong> {{ contrato.id_contrato }}
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Cliente: {{ contrato.nombre_cliente }}</p>
-                            <p class="card-text">DNI Cliente: {{ contrato.dni_cliente }}</p> <!-- Añadido DNI del Cliente -->
-                            <p class="card-text">Dirección Propiedad: {{ contrato.direccion_propiedad }}</p>
-                            <p class="card-text">Fecha Inicio: {{ contrato.fecha_inicio }}</p>
-                            <p class="card-text">Fecha Fin: {{ contrato.fecha_fin }}</p>
-                            <p class="card-text">Descripción: {{ contrato.descripcion }}</p>
+                            <p class="card-text"><strong>Cliente:</strong> {{ contrato.nombre_cliente }}</p>
+                            <p class="card-text"><strong>DNI Cliente:</strong> {{ contrato.dni_cliente }}</p> <!-- Añadido DNI del Cliente -->
+                            <p class="card-text"><strong>Dirección Propiedad:</strong> {{ contrato.direccion_propiedad }}</p>
+                            <p class="card-text"><strong>Fecha Inicio:</strong> {{ contrato.fecha_inicio }}</p>
+                            <p class="card-text"><strong>Fecha Fin:</strong> {{ contrato.fecha_fin }}</p>
+                            <p class="card-text"><strong>Descripción:</strong> {{ contrato.descripcion|safe }}</p>
                             {% if contrato.tiene_convenios %}
                                 <p class="card-text">Este contrato tiene convenios.</p>
                             {% else %}

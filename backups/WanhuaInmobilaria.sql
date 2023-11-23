@@ -125,7 +125,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$600000$RYyEjoRs8RWOFmfNktmxMe$MmOH3U+dwz80sJ3uskZOe+9kLnBoDgMxjAZnJWz/yAk=','2023-11-22 21:59:01.019211',1,'admin','','','',1,1,'2023-11-17 05:49:38.999188');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$600000$RYyEjoRs8RWOFmfNktmxMe$MmOH3U+dwz80sJ3uskZOe+9kLnBoDgMxjAZnJWz/yAk=','2023-11-23 03:16:00.137821',1,'admin','','','',1,1,'2023-11-17 05:49:38.999188');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +267,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2023-11-17 05:48:54.537323'),(2,'auth','0001_initial','2023-11-17 05:48:54.714864'),(3,'admin','0001_initial','2023-11-17 05:48:54.766025'),(4,'admin','0002_logentry_remove_auto_add','2023-11-17 05:48:54.772133'),(5,'admin','0003_logentry_add_action_flag_choices','2023-11-17 05:48:54.778593'),(6,'contenttypes','0002_remove_content_type_name','2023-11-17 05:48:54.814082'),(7,'auth','0002_alter_permission_name_max_length','2023-11-17 05:48:54.838438'),(8,'auth','0003_alter_user_email_max_length','2023-11-17 05:48:54.862274'),(9,'auth','0004_alter_user_username_opts','2023-11-17 05:48:54.868701'),(10,'auth','0005_alter_user_last_login_null','2023-11-17 05:48:54.914210'),(11,'auth','0006_require_contenttypes_0002','2023-11-17 05:48:54.916871'),(12,'auth','0007_alter_validators_add_error_messages','2023-11-17 05:48:54.922826'),(13,'auth','0008_alter_user_username_max_length','2023-11-17 05:48:54.950614'),(14,'auth','0009_alter_user_last_name_max_length','2023-11-17 05:48:54.979921'),(15,'auth','0010_alter_group_name_max_length','2023-11-17 05:48:54.993465'),(16,'auth','0011_update_proxy_permissions','2023-11-17 05:48:55.000024'),(17,'auth','0012_alter_user_first_name_max_length','2023-11-17 05:48:55.029467'),(18,'sessions','0001_initial','2023-11-17 05:48:55.044209'),(19,'tasks','0001_initial','2023-11-17 05:48:55.053288'),(20,'tasks','0002_propiedades','2023-11-17 05:48:55.077627'),(21,'tasks','0003_propiedades_direccion_propiedades_foto1_and_more','2023-11-17 05:48:55.108169'),(22,'tasks','0004_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.115152'),(23,'tasks','0005_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.121807'),(24,'tasks','0006_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.128087'),(25,'tasks','0007_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.135068'),(26,'tasks','0008_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.141307'),(27,'tasks','0009_contrato','2023-11-17 05:48:55.195615'),(28,'tasks','0010_convenio','2023-11-18 02:37:59.979302'),(29,'tasks','0011_backuphistory_and_more','2023-11-23 00:27:54.832755');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2023-11-17 05:48:54.537323'),(2,'auth','0001_initial','2023-11-17 05:48:54.714864'),(3,'admin','0001_initial','2023-11-17 05:48:54.766025'),(4,'admin','0002_logentry_remove_auto_add','2023-11-17 05:48:54.772133'),(5,'admin','0003_logentry_add_action_flag_choices','2023-11-17 05:48:54.778593'),(6,'contenttypes','0002_remove_content_type_name','2023-11-17 05:48:54.814082'),(7,'auth','0002_alter_permission_name_max_length','2023-11-17 05:48:54.838438'),(8,'auth','0003_alter_user_email_max_length','2023-11-17 05:48:54.862274'),(9,'auth','0004_alter_user_username_opts','2023-11-17 05:48:54.868701'),(10,'auth','0005_alter_user_last_login_null','2023-11-17 05:48:54.914210'),(11,'auth','0006_require_contenttypes_0002','2023-11-17 05:48:54.916871'),(12,'auth','0007_alter_validators_add_error_messages','2023-11-17 05:48:54.922826'),(13,'auth','0008_alter_user_username_max_length','2023-11-17 05:48:54.950614'),(14,'auth','0009_alter_user_last_name_max_length','2023-11-17 05:48:54.979921'),(15,'auth','0010_alter_group_name_max_length','2023-11-17 05:48:54.993465'),(16,'auth','0011_update_proxy_permissions','2023-11-17 05:48:55.000024'),(17,'auth','0012_alter_user_first_name_max_length','2023-11-17 05:48:55.029467'),(18,'sessions','0001_initial','2023-11-17 05:48:55.044209'),(19,'tasks','0001_initial','2023-11-17 05:48:55.053288'),(20,'tasks','0002_propiedades','2023-11-17 05:48:55.077627'),(21,'tasks','0003_propiedades_direccion_propiedades_foto1_and_more','2023-11-17 05:48:55.108169'),(22,'tasks','0004_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.115152'),(23,'tasks','0005_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.121807'),(24,'tasks','0006_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.128087'),(25,'tasks','0007_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.135068'),(26,'tasks','0008_alter_propiedades_foto1_alter_propiedades_foto2_and_more','2023-11-17 05:48:55.141307'),(27,'tasks','0009_contrato','2023-11-17 05:48:55.195615'),(28,'tasks','0010_convenio','2023-11-18 02:37:59.979302'),(29,'tasks','0011_backuphistory_and_more','2023-11-23 00:27:54.832755'),(30,'tasks','0012_alter_contrato_descripcion','2023-11-23 01:30:10.047523');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +293,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('kbfei6em942p93vozwp8f61af8peny0w','.eJxVjMsOwiAQRf-FtSGUNy7d-w1kmAGpGpqUdmX8dyXpQrf3nHNfLMK-1bj3vMaZ2JlN7PS7JcBHbgPQHdpt4bi0bZ0THwo_aOfXhfLzcrh_BxV6HbURNgglEgYFwaGxk5YClcScvBegHRKQL1_FGuO1K1DAKaMlBed1Yu8PyNo3Qg:1r5vFN:pZMUb9ddt9uk7ssYJ1yPwGtoyFg9scy7TQGC9cDXTsA','2023-12-06 21:59:01.020208'),('uoquxasr8m8a618fd8ndydkpwvjbbo78','.eJxVjMsOwiAQRf-FtSGUNy7d-w1kmAGpGpqUdmX8dyXpQrf3nHNfLMK-1bj3vMaZ2JlN7PS7JcBHbgPQHdpt4bi0bZ0THwo_aOfXhfLzcrh_BxV6HbURNgglEgYFwaGxk5YClcScvBegHRKQL1_FGuO1K1DAKaMlBed1Yu8PyNo3Qg:1r5bAO:8FMc5OVmin_BdigKXMJWBhm1XjQ-RB0QCwB-i1OaaXU','2023-12-06 00:32:32.793970');
+INSERT INTO `django_session` VALUES ('al6mj8y7uztjbuagh91pjlnhp6qxexb9','.eJxVjMsOwiAQRf-FtSGUNy7d-w1kmAGpGpqUdmX8dyXpQrf3nHNfLMK-1bj3vMaZ2JlN7PS7JcBHbgPQHdpt4bi0bZ0THwo_aOfXhfLzcrh_BxV6HbURNgglEgYFwaGxk5YClcScvBegHRKQL1_FGuO1K1DAKaMlBed1Yu8PyNo3Qg:1r60C8:TQ2yhOvHYrxT-oDhjGohqkANakCQ5rShKt9EGHqYXbA','2023-12-07 03:16:00.139817'),('fm0zc9bvscurx6ryehwn3ey0yr3qd2pn','.eJxVjMsOwiAQRf-FtSGUNy7d-w1kmAGpGpqUdmX8dyXpQrf3nHNfLMK-1bj3vMaZ2JlN7PS7JcBHbgPQHdpt4bi0bZ0THwo_aOfXhfLzcrh_BxV6HbURNgglEgYFwaGxk5YClcScvBegHRKQL1_FGuO1K1DAKaMlBed1Yu8PyNo3Qg:1r5yHA:YZ-k_CFp_ctjLGu9wl7KhWgoYK-2KH6WNQXKAgg5aa4','2023-12-07 01:13:04.212285'),('tmba4fn7lylxvihh3lh7wumup287ihl8','e30:1r604w:RRTBEBM57aAlLGHCwboFQmrJUz_5vAqGQl4ekqi5_q8','2023-12-07 03:08:34.918390'),('uoquxasr8m8a618fd8ndydkpwvjbbo78','.eJxVjMsOwiAQRf-FtSGUNy7d-w1kmAGpGpqUdmX8dyXpQrf3nHNfLMK-1bj3vMaZ2JlN7PS7JcBHbgPQHdpt4bi0bZ0THwo_aOfXhfLzcrh_BxV6HbURNgglEgYFwaGxk5YClcScvBegHRKQL1_FGuO1K1DAKaMlBed1Yu8PyNo3Qg:1r5bAO:8FMc5OVmin_BdigKXMJWBhm1XjQ-RB0QCwB-i1OaaXU','2023-12-06 00:32:32.793970');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +309,7 @@ CREATE TABLE `tasks_backuphistory` (
   `timestamp` datetime(6) NOT NULL,
   `success` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,7 +318,7 @@ CREATE TABLE `tasks_backuphistory` (
 
 LOCK TABLES `tasks_backuphistory` WRITE;
 /*!40000 ALTER TABLE `tasks_backuphistory` DISABLE KEYS */;
-INSERT INTO `tasks_backuphistory` VALUES (1,'2023-11-23 00:32:12.407830',1);
+INSERT INTO `tasks_backuphistory` VALUES (1,'2023-11-23 00:32:12.407830',1),(2,'2023-11-23 00:35:26.692912',1),(3,'2023-11-23 03:17:22.027283',1);
 /*!40000 ALTER TABLE `tasks_backuphistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +368,7 @@ CREATE TABLE `tasks_contrato` (
   KEY `tasks_contrato_propiedades_id_bbb9da6d_fk_tasks_pro` (`propiedades_id`),
   CONSTRAINT `tasks_contrato_cliente_id_a0867919_fk_tasks_cliente_dni` FOREIGN KEY (`cliente_id`) REFERENCES `tasks_cliente` (`dni`),
   CONSTRAINT `tasks_contrato_propiedades_id_bbb9da6d_fk_tasks_pro` FOREIGN KEY (`propiedades_id`) REFERENCES `tasks_propiedades` (`ID_prop`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +377,7 @@ CREATE TABLE `tasks_contrato` (
 
 LOCK TABLES `tasks_contrato` WRITE;
 /*!40000 ALTER TABLE `tasks_contrato` DISABLE KEYS */;
-INSERT INTO `tasks_contrato` VALUES (13,'1993-01-02','1999-02-01','asfafs','33333333',2),(16,'1989-06-05','2010-05-02','asd','5645646',5),(17,'1993-01-03','2100-04-01','ggg','5645646',6),(18,'2100-05-01','2200-06-05','ASFF','5645646',5);
+INSERT INTO `tasks_contrato` VALUES (13,'1993-01-02','1999-02-01','asfafs','33333333',2),(18,'2100-05-01','2200-06-05','<h1><strong><del>ASFFggg</del></strong></h1>','5645646',5),(19,'1993-01-05','1999-01-01','agag','5645646',5);
 /*!40000 ALTER TABLE `tasks_contrato` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,7 +397,7 @@ CREATE TABLE `tasks_convenio` (
   PRIMARY KEY (`id_convenio`),
   KEY `tasks_convenio_id_contrato_id_4273d6d6_fk_tasks_con` (`id_contrato_id`),
   CONSTRAINT `tasks_convenio_id_contrato_id_4273d6d6_fk_tasks_con` FOREIGN KEY (`id_contrato_id`) REFERENCES `tasks_contrato` (`id_contrato`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,7 +406,7 @@ CREATE TABLE `tasks_convenio` (
 
 LOCK TABLES `tasks_convenio` WRITE;
 /*!40000 ALTER TABLE `tasks_convenio` DISABLE KEYS */;
-INSERT INTO `tasks_convenio` VALUES (17,'1998-06-05','2001-01-31','dd',16),(19,'1993-06-05','2010-05-01','afsgagag',18);
+INSERT INTO `tasks_convenio` VALUES (20,'1959-05-01','2006-01-01','ag',13);
 /*!40000 ALTER TABLE `tasks_convenio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,7 +440,7 @@ CREATE TABLE `tasks_propiedades` (
 
 LOCK TABLES `tasks_propiedades` WRITE;
 /*!40000 ALTER TABLE `tasks_propiedades` DISABLE KEYS */;
-INSERT INTO `tasks_propiedades` VALUES (2,1,1,1.00,'11','33333333','1','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(3,1,1,1.00,'11','33333333','11','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(4,1,1,1.00,'1','33333333','1','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(5,1,1,1.00,'asd','5645646','asd','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(6,1,1,1.00,'1','5645646',NULL,'propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg');
+INSERT INTO `tasks_propiedades` VALUES (2,1,1,1.00,'11','33333333','1','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(4,1,1,1.00,'1','33333333','1','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(5,1,1,1.00,'asd','5645646','asd','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg'),(6,1,1,1.00,'1','5645646',NULL,'propiedades/fotos/default.jpg','propiedades/fotos/default.jpg','propiedades/fotos/default.jpg');
 /*!40000 ALTER TABLE `tasks_propiedades` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -453,4 +453,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-22 21:35:26
+-- Dump completed on 2023-11-23  0:17:25

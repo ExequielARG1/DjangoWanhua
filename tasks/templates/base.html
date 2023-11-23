@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/640439664e.js" crossorigin="anonymous"></script>
     <title>CRUD</title>
 
     <!-- Add Bootstrap CSS link -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+
     <style>
         /* Estilo personalizado para la barra de navegación */
         .navbar-custom {
@@ -22,6 +24,14 @@
 
         .navbar-custom .navbar-toggler-icon {
             background-color: #fff; /* Ícono del botón hamburguesa blanco */
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: center; /* Centra los elementos en la barra de navegación */
+        }
+
+        .navbar-custom .nav-item {
+            margin-right: 15px; /* Ajusta el espacio entre elementos */
         }
 
         /* Estilo personalizado para el cuerpo del contenido */
@@ -46,19 +56,39 @@
             margin: 20px;
             z-index: 1000; /* Asegura que esté por encima de otros elementos */
         }
+
+        /* Estilo personalizado para la imagen en el primer ítem */
+        .navbar-custom .navbar-brand img {
+            width: 3em; /* Ajusta el ancho de la imagen según sea necesario */
+            margin-right: 5px; /* Ajusta el espacio entre la imagen y el texto */
+        }
+
+        .navbar-custom .navbar-brand .formal-text {
+            font-family: 'Nombre de la fuente formal', monospace; /* Reemplaza 'Nombre de la fuente formal' con el nombre de tu fuente formal */
+        }
+
+        #movedizo{
+            margin-top: 9em;
+        }
+
+        .w3-container, .w3-panel {
+        padding: 0.01em 16px;
+        }   
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="/">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <a class="navbar-brand" href="/">
+            <img src="../media/propiedades/logo1.png" alt="Logo">
+            <span class="formal-text">WANHUA</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="fa fa-caret-square-o-down" style="color: #fff;"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/tasks">Task</a>
-                </li>
                 <!-- Debes adaptar la verificación de autenticación y el nombre de usuario aquí -->
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -101,28 +131,31 @@
 
     <!-- Define la variable isAuthenticated antes de cargar el script -->
     {% if user.is_authenticated %}
-        <script>
-            var isAuthenticated = true;
-            var username = "{{ user.username }}";
-        </script>
+    <script>
+        var isAuthenticated = true;
+        var username = "{{ user.username }}";
+    </script>
     {% else %}
-        <script>
-            var isAuthenticated = false;
-        </script>
+    <script>
+        var isAuthenticated = false;
+    </script>
     {% endif %}
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var welcomeMessageElement = document.createElement('div');
-            welcomeMessageElement.classList.add('welcome-message');
-            document.body.appendChild(welcomeMessageElement);
+        document.addEventListener('DOMContentLoaded', function () {
+        var welcomeMessageElement = document.createElement('div');
+        welcomeMessageElement.classList.add('welcome-message');
+        document.body.appendChild(welcomeMessageElement);
 
-            if (isAuthenticated) {
-                // Muestra el mensaje de bienvenida si el usuario está autenticado
-                welcomeMessageElement.textContent = '¡Hola, ' + username + '!';
-            } else {
-                welcomeMessageElement.textContent = 'Bienvenido a nuestra aplicación.';
-            }
+        if (isAuthenticated) {
+            // Muestra el mensaje de bienvenida si el usuario está autenticado
+            welcomeMessageElement.textContent = '¡Hola, ' + username + '!';
+            welcomeMessageElement.style.marginTop = '6em'; // Agrega el margen al elemento
+            welcomeMessageElement.style.marginRight = '0'; 
+        } else {
+            welcomeMessageElement.style.marginTop = '4em'; // Agrega el margen al elemento
+            welcomeMessageElement.style.marginRight = '0'; 
+        }
         });
     </script>
     <!-- ... (código HTML posterior) ... -->
@@ -132,4 +165,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
+
+</html>.

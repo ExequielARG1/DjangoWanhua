@@ -27,7 +27,7 @@ from PIL import Image
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
-
+@login_required
 def home(request):
     return render(request, "home.html")
 
@@ -45,7 +45,7 @@ def signup(request):
                 )
                 user.save()
                 login(request, user)
-                return redirect("tasks")
+                return redirect("home")
             except IntegrityError:
                 return render(
                     # si el usuario ya existe, se le devuelve el formulario con un mensaje de error
@@ -61,9 +61,6 @@ def signup(request):
             {"form": UserCreationForm(), "error": "Contraseña no coincide"},
         )
 
-
-def tasks(request):
-    return render(request, "tasks.html")
 
 
 def cerrar_sesion(request):
@@ -88,7 +85,7 @@ def login_entrar(request):
             )
         else:
             login(request, user)
-            return redirect("tasks")
+            return redirect("home")
         
 @login_required
 def cliente_list(request):
@@ -540,7 +537,7 @@ def listar_convenios_clientes(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'convenios_clientes.html', {'page_obj': page_obj, 'search_query': search_query})
-@login_required
+
 
 def realizar_backup_mysql():
     # Configuración de la ruta al directorio de instalación de MySQL
