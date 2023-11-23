@@ -15,58 +15,60 @@
         <i class="fas fa-arrow-left"></i> Volver Atrás
     </button>
 
-     
-<!-- Título de la Gestión de Contratos -->
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            {% if cliente %}
-                <h2 class="mb-4">Gestión de contratos de {{ cliente.nombre_cliente }}</h2>
-            {% else %}
-                <h2 class="mb-4">Gestión de Contratos</h2>
-            {% endif %}
+    <!-- Título de la Gestión de Contratos -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                {% if cliente %}
+                    <h2 class="mb-4">Gestión de contratos de {{ cliente.nombre_cliente }}</h2>
+                {% else %}
+                    <h2 class="mb-4">Gestión de Contratos</h2>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 
-{% if is_creating_new or form.instance.pk %}
-    <div class="card mb-4">
-        <div class="card-body">
-            <form method="post" action="{% if form.instance.pk %}{% url 'actualizar_contrato' form.instance.pk form.instance.cliente.dni %}{% else %}{% url 'crear_contrato' cliente.dni propiedad.ID_prop %}{% endif %}">
-                {% csrf_token %}
-                {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {% if field.name == 'cliente' or field.name == 'propiedades' %}
-                        <!-- Renderiza el campo como solo lectura -->
-                        <input type="text" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}" readonly>
-                    {% else %}
-                        <!-- Renderiza los campos, incluidos los de fecha, normalmente -->
-                        {{ field|add_class:"form-control" }}
-                    {% endif %}
-                    {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>
-                    {% endif %}
-                </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
-            </form>
+    {% if is_creating_new or form.instance.pk %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="post" action="{% if form.instance.pk %}{% url 'actualizar_contrato' form.instance.pk form.instance.cliente.dni %}{% else %}{% url 'crear_contrato' cliente.dni propiedad.ID_prop %}{% endif %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if field.name == 'cliente' or field.name == 'propiedades' %}
+                                <!-- Renderiza el campo como solo lectura -->
+                                <input type="text" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}" readonly>
+                            {% else %}
+                                <!-- Renderiza los campos, incluidos los de fecha, normalmente -->
+                                {{ field|add_class:"form-control" }}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                </form>
+            </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 
-    
-    
-<!-- Formulario de búsqueda -->
-<form method="get" class="mb-4">
-    <div class="input-group">
-        <input type="text" class="form-control" name="search" placeholder="Buscar por ID de Contrato o ID de Propiedad...">
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+    <!-- Formulario de búsqueda -->
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Buscar por ID de Contrato o ID de Propiedad...">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+            </div>
         </div>
-    </div>
-</form>
-    
+    </form>
+
     <!-- Listado de contratos -->
     <div class="card">
         <div class="card-header">
@@ -89,54 +91,54 @@
                 </thead>
                 <tbody>
                     {% for contrato in contratos %}
-                    <tr>
-                        <td>{{ contrato.id_contrato }}</td>
-                        <td>{{ contrato.cliente.nombre_cliente }}</td>
-                        <td>{{ contrato.cliente.dni }}</td>
-                        <td>{{ contrato.propiedades.ID_prop }}</td>
-                        <td>{{ contrato.propiedades.direccion }}</td>
-                        <td>{{ contrato.fecha_inicio }}</td>
-                        <td>{{ contrato.fecha_fin }}</td>
-                        <td>{{ contrato.descripcion }}</td>
-                        <td>
-                            <a href="{% url 'actualizar_contrato' contrato.id_contrato contrato.cliente.dni %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="{% url 'generar_contrato_pdf' id_contrato=contrato.id_contrato %}" class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i> PDF</a>
-                            {% if contrato.tiene_convenios %}  <!-- Suponiendo 'tiene_convenios' es un método o propiedad -->
-                                <a href="{% url 'listar_convenios' contrato.id_contrato %}" class="btn btn-sm btn-primary"><i class="fas fa-handshake"></i> Ver Convenios</a>
-                            {% endif %}
-                            <a href="{% url 'crear_convenio' contrato.id_contrato %}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Agregar Convenio</a>
-                            <form action="{% url 'eliminar_contrato' contrato.id_contrato contrato.cliente.dni %}" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash-alt"></i> Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <div class="modal fade" id="contractDetails{{ contrato.id_contrato }}" tabindex="-1" role="dialog" aria-labelledby="contractDetailsLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="contractDetailsLabel">Detalles del Contrato</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <h4>Información del Contrato</h4>
-                                    <p><strong>ID Contrato:</strong> {{ contrato.id_contrato }}</p>
-                                    <p><strong>Cliente:</strong> {{ contrato.cliente.nombre_cliente }}</p>
-                                    <p><strong>DNI Cliente:</strong> {{ contrato.cliente.dni }}</p>
-                                    <p><strong>ID Propiedad:</strong> {{ contrato.propiedades.ID_prop }}</p>
-                                    <p><strong>Dirección Propiedad:</strong> {{ contrato.propiedades.direccion }}</p>
-                                    <p><strong>Fecha Inicio:</strong> {{ contrato.fecha_inicio }}</p>
-                                    <p><strong>Fecha Fin:</strong> {{ contrato.fecha_fin }}</p>
-                                    <p><strong>Descripción:</strong> {{ contrato.descripcion }}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <tr>
+                            <td>{{ contrato.id_contrato }}</td>
+                            <td>{{ contrato.cliente.nombre_cliente }}</td>
+                            <td>{{ contrato.cliente.dni }}</td>
+                            <td>{{ contrato.propiedades.ID_prop }}</td>
+                            <td>{{ contrato.propiedades.direccion }}</td>
+                            <td>{{ contrato.fecha_inicio }}</td>
+                            <td>{{ contrato.fecha_fin }}</td>
+                            <td>{{ contrato.descripcion }}</td>
+                            <td>
+                                <a href="{% url 'actualizar_contrato' contrato.id_contrato contrato.cliente.dni %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                                <a href="{% url 'generar_contrato_pdf' id_contrato=contrato.id_contrato %}" class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i> PDF</a>
+                                {% if contrato.tiene_convenios %}
+                                    <a href="{% url 'listar_convenios' contrato.id_contrato %}" class="btn btn-sm btn-primary"><i class="fas fa-handshake"></i> Ver Convenios</a>
+                                {% endif %}
+                                <a href="{% url 'crear_convenio' contrato.id_contrato %}" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Agregar Convenio</a>
+                                <form action="{% url 'eliminar_contrato' contrato.id_contrato contrato.cliente.dni %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirmDelete()"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <div class="modal fade" id="contractDetails{{ contrato.id_contrato }}" tabindex="-1" role="dialog" aria-labelledby="contractDetailsLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="contractDetailsLabel">Detalles del Contrato</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Información del Contrato</h4>
+                                        <p><strong>ID Contrato:</strong> {{ contrato.id_contrato }}</p>
+                                        <p><strong>Cliente:</strong> {{ contrato.cliente.nombre_cliente }}</p>
+                                        <p><strong>DNI Cliente:</strong> {{ contrato.cliente.dni }}</p>
+                                        <p><strong>ID Propiedad:</strong> {{ contrato.propiedades.ID_prop }}</p>
+                                        <p><strong>Dirección Propiedad:</strong> {{ contrato.propiedades.direccion }}</p>
+                                        <p><strong>Fecha Inicio:</strong> {{ contrato.fecha_inicio }}</p>
+                                        <p><strong>Fecha Fin:</strong> {{ contrato.fecha_fin }}</p>
+                                        <p><strong>Descripción:</strong> {{ contrato.descripcion }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </tbody>
             </table>
@@ -178,8 +180,48 @@
                 return result.isConfirmed;
             });
         };
+
+        $(document).ready(function () {
+    // Asegúrate de tener la lista de contratos existentes disponible aquí
+    var contratosExistentes = []; // Debe ser llenado con los datos reales
+
+    function validarSolapamiento(fechaInicio, fechaFin) {
+        for (var contrato of contratosExistentes) {
+            var contratoFechaInicio = new Date(contrato.fecha_inicio);
+            var contratoFechaFin = new Date(contrato.fecha_fin);
+
+            if (fechaInicio <= contratoFechaFin && fechaFin >= contratoFechaInicio) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    $('form').submit(function() {
+        var fechaInicio = new Date($('#id_fecha_inicio').val());
+        var fechaFin = new Date($('#id_fecha_fin').val());
+
+        if (fechaInicio > fechaFin) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La fecha de inicio no puede ser posterior a la fecha de fin.',
+            });
+            return false;
+        }
+
+        if (!validarSolapamiento(fechaInicio, fechaFin)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Las fechas del contrato se solapan con otro contrato existente para esta propiedad.',
+            });
+            return false;
+        }
+
+        return true;
     });
-
-
+});
+    });
 </script>
 {% endblock %}

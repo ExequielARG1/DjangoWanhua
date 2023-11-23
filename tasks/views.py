@@ -5,14 +5,20 @@ from django.db import IntegrityError
 from reportlab.lib.utils import ImageReader
 from django.urls import reverse
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import login, logout, authenticate
 from .models import Cliente, Propiedades, Contrato, Convenio
 from django.contrib import messages
-
+import subprocess
+from .models import BackupHistory
+from .backup import realizar_backup_mysql
+import shutil
+from datetime import timedelta
 from .forms import ClienteForm, PropiedadesForm, ContratoForm, ConvenioForm
 import os
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from io import BytesIO
 from datetime import datetime
 from django.conf import settings
@@ -84,7 +90,7 @@ def login_entrar(request):
             login(request, user)
             return redirect("tasks")
         
-
+@login_required
 def cliente_list(request):
     search_query = request.GET.get('search')
     clientes_list = Cliente.objects.all()
@@ -105,6 +111,7 @@ def cliente_list(request):
     form = None
     return render(request, 'clientes.html', {'clientes': clientes, 'form': form})
 
+@login_required
 def cliente_create(request):
     if request.method == 'POST':
         form = ClienteForm(request.POST)
@@ -128,13 +135,13 @@ def cliente_update(request, dni):
     clientes = Cliente.objects.all()
     return render(request, 'clientes.html', {'form': form, 'clientes': clientes})
 
-
+@login_required
 def cliente_delete(request, dni):
     cliente = Cliente.objects.get(dni=dni)
     cliente.delete()
     return redirect(reverse('cliente_list'))
 
-
+@login_required
 def propiedades_clientes_todas(request):
     # Obtener el término de búsqueda del query string
     search_query = request.GET.get('search', '')
@@ -159,11 +166,7 @@ def propiedades_clientes_todas(request):
 
     return render(request, 'propiedades_clientes.html', {'propiedades': page_obj})
 
-
-
-
-
-
+@login_required
 def propiedades_list(request, dni_cliente):
     cliente = get_object_or_404(Cliente, dni=dni_cliente)
     if request.method == 'POST':
@@ -177,7 +180,7 @@ def propiedades_list(request, dni_cliente):
         form = PropiedadesForm()
     propiedades = Propiedades.objects.filter(cliente=cliente)
     return render(request, 'propiedades.html', {'propiedades': propiedades, 'form': form, 'cliente': cliente})
-
+@login_required
 def propiedades_edit(request, id):
     propiedad = get_object_or_404(Propiedades, ID_prop=id)
     if request.method == 'POST':
@@ -198,7 +201,7 @@ def propiedades_edit(request, id):
     else:
         form = PropiedadesForm(instance=propiedad)
     return render(request, 'propiedades.html', {'form': form, 'cliente': propiedad.cliente, 'editing': True})
-
+@login_required
 def propiedades_delete(request, id):
     propiedad = get_object_or_404(Propiedades, ID_prop=id)
     if request.method == 'POST':
@@ -214,7 +217,7 @@ def propiedades_delete(request, id):
     return render(request, 'propiedades.html', {'propiedad_to_delete': propiedad, 'cliente': propiedad.cliente})
 
 
-
+@login_required
 def listar_contratos(request, dni_cliente=None):
     search_query = request.GET.get('search', '')
 
@@ -251,7 +254,7 @@ def listar_contratos(request, dni_cliente=None):
         'search_query': search_query
     })
 
-
+@login_required
 def crear_contrato(request, dni_cliente, propiedad_id):
     cliente = get_object_or_404(Cliente, dni=dni_cliente)
     propiedad = get_object_or_404(Propiedades, ID_prop=propiedad_id)
@@ -281,7 +284,7 @@ def crear_contrato(request, dni_cliente, propiedad_id):
     }
     return render(request, 'contratos.html', context)
 
-
+@login_required
 def actualizar_contrato(request, id_contrato, dni_cliente):
     contrato = get_object_or_404(Contrato, id_contrato=id_contrato)
 
@@ -301,6 +304,7 @@ def actualizar_contrato(request, id_contrato, dni_cliente):
         form.fields['propiedades'].widget.attrs['readonly'] = True
 
     return render(request, 'contratos.html', {'form': form, 'contrato': contrato, 'dni_cliente': dni_cliente})
+@login_required
 
 def eliminar_contrato(request, id_contrato, dni_cliente):
     contrato = get_object_or_404(Contrato, id_contrato=id_contrato)
@@ -314,6 +318,7 @@ def eliminar_contrato(request, id_contrato, dni_cliente):
     return render(request, 'contratos.html', {'contrato': contrato, 'dni_cliente': dni_cliente})
 
 
+@login_required
 
 def generar_contrato_pdf(request, id_contrato):
     contrato = get_object_or_404(Contrato, id_contrato=id_contrato)
@@ -388,6 +393,7 @@ def generar_contrato_pdf(request, id_contrato):
     p.showPage()
     p.save()
     return response
+@login_required
 
 def listar_convenios(request, id_contrato):
     contrato = get_object_or_404(Contrato, id_contrato=id_contrato)
@@ -418,6 +424,7 @@ def listar_convenios(request, id_contrato):
         'search_query': search_query  # Pasar la consulta de búsqueda a la plantilla
     })
 
+@login_required
 
 # En tu vista crear_convenio
 def crear_convenio(request, id_contrato):
@@ -435,6 +442,7 @@ def crear_convenio(request, id_contrato):
     return render(request, 'convenios.html', {'form': form, 'id_contrato': id_contrato})
 
 
+@login_required
 
 def editar_convenio(request, id_convenio):
     convenio = get_object_or_404(Convenio, pk=id_convenio)
@@ -455,6 +463,7 @@ def editar_convenio(request, id_convenio):
 
 
 
+@login_required
 
 def eliminar_convenio(request, id_convenio):
     convenio = get_object_or_404(Convenio, pk=id_convenio)
@@ -477,6 +486,7 @@ def eliminar_convenio(request, id_convenio):
 
 
 
+@login_required
 
 def listar_todos_los_contratos(request):
     search_query = request.GET.get('search', '')
@@ -512,6 +522,7 @@ def listar_todos_los_contratos(request):
 
     return render(request, 'contratos_clientes.html', {'contratos': contratos_enriched, 'page_obj': page_obj})
 
+@login_required
 
 def listar_convenios_clientes(request):
     search_query = request.GET.get('search', '')
@@ -529,3 +540,102 @@ def listar_convenios_clientes(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'convenios_clientes.html', {'page_obj': page_obj, 'search_query': search_query})
+@login_required
+
+def realizar_backup_mysql():
+    # Configuración de la ruta al directorio de instalación de MySQL
+    base_dir_mysql = "C:\\Program Files\\MySQL\\MySQL Server 8.2"
+    mysql_bin_dir = os.path.join(base_dir_mysql, 'bin')
+
+    # Agregar la ruta de MySQL al PATH
+    os.environ['PATH'] = f'{mysql_bin_dir};{os.environ["PATH"]}'
+
+    db_name = 'WanhuaInmobilaria'  # Nombre de tu base de datos
+    backup_directory = 'backups'
+    
+    # Obtener la ruta del directorio del proyecto Django
+    base_dir = settings.BASE_DIR
+    
+    backup_file = os.path.join(base_dir, backup_directory, f'{db_name}.sql')
+
+    # Asegúrate de que la carpeta de backups exista
+    os.makedirs(os.path.join(base_dir, backup_directory), exist_ok=True)
+
+    # Comando para realizar el backup de MySQL
+    mysqldump_path = shutil.which('mysqldump')
+    if not mysqldump_path:
+        print("mysqldump no encontrado en el sistema. Verifica la instalación.")
+        return False
+
+    # Configuración del comando para el backup
+    command = [
+        mysqldump_path,
+        "-u", settings.DATABASES['default']['USER'],
+        f"-p{settings.DATABASES['default']['PASSWORD']}",
+        db_name
+    ]
+
+    print(f"Backup file path: {backup_file}")  # Agregar este print para verificar el path
+
+    # Ejecutar el comando
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+
+        if process.returncode == 0:
+            with open(backup_file, 'w') as file:
+                file.write(output.decode())
+            
+            # Guardar la información en el historial de backups
+            backup_history = BackupHistory(success=True)
+            backup_history.save()
+
+            return True
+        else:
+            print(f"Error al ejecutar el comando: {error.decode()}")
+            return False
+    except subprocess.CalledProcessError:
+        return False
+@login_required
+
+def get_backup_history():
+    return BackupHistory.objects.all()
+@login_required
+
+def calcular_tiempo_restante(dias):
+    ultimo_backup = BackupHistory.objects.filter(success=True).last()
+
+    if ultimo_backup:
+        tiempo_pasado = timezone.now() - ultimo_backup.timestamp
+        tiempo_restante = timedelta(days=dias) - tiempo_pasado
+        return tiempo_restante.days, tiempo_restante.seconds // 3600, (tiempo_restante.seconds // 60) % 60
+    else:
+        return None
+@login_required
+
+def backup(request):
+    if request.method == "POST":
+        if realizar_backup_mysql():
+            return HttpResponse("Backup realizado con éxito.")
+        else:
+            return HttpResponse("Error al realizar el backup.", status=500)
+    elif request.method == "GET":
+        # Obtener el historial de backups
+        backup_history = get_backup_history()
+
+        # Calcular tiempo restante para el próximo backup (1 día por defecto)
+        tiempo_restante = calcular_tiempo_restante(1)
+
+        # Obtener el valor del temporizador desde la solicitud (si está presente)
+        dias_temporizador = int(request.GET.get('dias', 1))
+
+        context = {
+            'backup_history': backup_history,
+            'tiempo_restante': tiempo_restante,
+            'dias_temporizador': dias_temporizador,
+        }
+
+        return render(request, 'backup.html', context)
+    else:
+        # Si se utiliza un método diferente a GET o POST, devolver una respuesta de método no permitido
+        return HttpResponseNotAllowed(["GET", "POST"])

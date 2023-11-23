@@ -52,15 +52,15 @@ class ContratoForm(forms.ModelForm):
         fecha_fin = cleaned_data.get("fecha_fin")
         propiedades = cleaned_data.get("propiedades")
 
-        # Comprobación de que la fecha de inicio no sea posterior a la fecha de fin
         if fecha_inicio and fecha_fin:
             if fecha_inicio > fecha_fin:
                 raise ValidationError("La fecha de inicio no puede ser posterior a la fecha de fin.")
 
-            # Verificar si hay solapamiento de fechas
+            # Verificar si hay solapamiento de fechas con otros contratos para la misma propiedad
             contratos_existentes = Contrato.objects.filter(propiedades=propiedades)
-            
+
             if self.instance and self.instance.pk:
+                # Excluir el contrato actual si está siendo editado
                 contratos_existentes = contratos_existentes.exclude(pk=self.instance.pk)
 
             for contrato in contratos_existentes:
@@ -95,7 +95,7 @@ class ConvenioForm(forms.ModelForm):
             if fecha_inicio > fecha_fin:
                 raise ValidationError("La fecha de inicio no puede ser posterior a la fecha de fin.")
 
-            # Verificar si hay solapamiento de fechas con otros convenios del mismo contrato
+            # Verificar solapamiento con otros convenios
             convenios_existentes = Convenio.objects.filter(id_contrato=id_contrato)
 
             if self.instance and self.instance.pk:

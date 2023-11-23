@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Backup de la Base de Datos</h1>
+
+    <!-- Formulario de backup con animación de fadeIn -->
+    <form action="{% url 'backup' %}" method="post" class="mb-4 animated fadeIn">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Realizar Backup</button>
+    </form>
+
+    <!-- Configuración del temporizador con animación de fadeIn -->
+    <div class="mb-4 animated fadeIn">
+        <form action="{% url 'backup' %}" method="get" class="form-inline">
+            <label for="dias" class="mr-2">Configurar temporizador (días): </label>
+            <input type="number" id="dias" name="dias" value="{{ dias_temporizador }}" min="1" class="form-control mr-2">
+            <button type="submit" class="btn btn-primary">Actualizar Temporizador</button>
+        </form>
+    </div>
+
+    <!-- Visualización de historial de backups con animación de bounceInLeft -->
+    <div class="mb-4 animated bounceInLeft">
+        <h2>Historial de Backups</h2>
+        <div class="list-group">
+            {% for backup_entry in backup_history %}
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ backup_entry.timestamp|date:"F d, Y H:i:s" }}</h5>
+                        {% if backup_entry.success %}
+                            <span class="badge badge-success">Éxito</span>
+                        {% else %}
+                            <span class="badge badge-danger">Error</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Tiempo restante para el próximo backup con animación de fadeInUp -->
+    <div class="animated fadeInUp">
+        {% if tiempo_restante %}
+            <h2>Tiempo Restante para el Próximo Backup</h2>
+            <p>{{ tiempo_restante.0 }} días, {{ tiempo_restante.1 }} horas, {{ tiempo_restante.2 }} minutos</p>
+        {% else %}
+            <p>No hay backups realizados aún.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

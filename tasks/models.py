@@ -69,3 +69,8 @@ class Convenio(models.Model):
             self.fecha_fin = datetime.datetime.strptime(self.fecha_fin, '%d/%m/%Y').date()
         
         super(Convenio, self).save(*args, **kwargs)
+
+
+class BackupHistory(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    success = models.BooleanField(default=False)

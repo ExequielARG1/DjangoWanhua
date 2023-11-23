@@ -37,6 +37,8 @@ path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedade
     path('convenios/crear/<int:id_contrato>/', views.crear_convenio, name='crear_convenio'),
     path('convenios/editar/<int:id_convenio>/', views.editar_convenio, name='editar_convenio'),
     path('convenios/eliminar/<int:id_convenio>/', views.eliminar_convenio, name='eliminar_convenio'),
+
+    path('backup/', views.backup, name='backup'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
