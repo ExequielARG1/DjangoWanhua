@@ -596,15 +596,12 @@ def realizar_backup_mysql():
             return False
     except subprocess.CalledProcessError:
         return False
-@login_required
-
 def get_backup_history():
     return BackupHistory.objects.all()
-@login_required
 
+# Esta función tampoco necesita ser una vista ni el decorador @login_required
 def calcular_tiempo_restante(dias):
     ultimo_backup = BackupHistory.objects.filter(success=True).last()
-
     if ultimo_backup:
         tiempo_pasado = timezone.now() - ultimo_backup.timestamp
         tiempo_restante = timedelta(days=dias) - tiempo_pasado
@@ -612,21 +609,18 @@ def calcular_tiempo_restante(dias):
     else:
         return None
 @login_required
-
 def backup(request):
     if request.method == "POST":
         if realizar_backup_mysql():
-            return HttpResponse("Backup realizado con éxito.")
+            messages.success(request, "Backup realizado con éxito.")
+            return redirect('backup')  # Redirige a la misma página para mostrar el mensaje
         else:
-            return HttpResponse("Error al realizar el backup.", status=500)
+            messages.error(request, "Error al realizar el backup.")
+            return redirect('backup')
+
     elif request.method == "GET":
-        # Obtener el historial de backups
         backup_history = get_backup_history()
-
-        # Calcular tiempo restante para el próximo backup (1 día por defecto)
         tiempo_restante = calcular_tiempo_restante(1)
-
-        # Obtener el valor del temporizador desde la solicitud (si está presente)
         dias_temporizador = int(request.GET.get('dias', 1))
 
         context = {
@@ -636,6 +630,6 @@ def backup(request):
         }
 
         return render(request, 'backup.html', context)
+
     else:
-        # Si se utiliza un método diferente a GET o POST, devolver una respuesta de método no permitido
         return HttpResponseNotAllowed(["GET", "POST"])
