@@ -55,7 +55,7 @@ class Convenio(models.Model):
     id_contrato = models.ForeignKey('Contrato', on_delete=models.CASCADE)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
-    descripcion = models.TextField()
+    descripcion = RichTextField()
 
     def fecha_inicio_formatted(self):
         return self.fecha_inicio.strftime('%d/%m/%Y')

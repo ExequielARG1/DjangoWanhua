@@ -28,7 +28,6 @@ path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedade
     path('contratos/actualizar/<int:id_contrato>/<str:dni_cliente>/', views.actualizar_contrato, name='actualizar_contrato'),
     path('contratos/eliminar/<int:id_contrato>/<str:dni_cliente>/', views.eliminar_contrato, name='eliminar_contrato'),
 
-    path('contratos/generar_pdf/<int:id_contrato>/', views.generar_contrato_pdf, name='generar_contrato_pdf'),
 
     path('convenios_clientes/', views.listar_convenios_clientes, name='listar_convenios_clientes'),
 
@@ -38,6 +37,9 @@ path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedade
     path('convenios/eliminar/<int:id_convenio>/', views.eliminar_convenio, name='eliminar_convenio'),
 
     path('backup/', views.backup, name='backup'),
+
+    path('contratos/pdf/<int:id_contrato>/', views.generar_contrato_pdf, name='generar_contrato_pdf'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

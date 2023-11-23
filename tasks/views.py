@@ -11,17 +11,20 @@ from django.contrib.auth import login, logout, authenticate
 from .models import Cliente, Propiedades, Contrato, Convenio
 from django.contrib import messages
 import subprocess
-from .models import BackupHistory
+from .models import BackupHistory, Contrato
 from .backup import realizar_backup_mysql
 import shutil
+from django.template.loader import render_to_string
 from datetime import timedelta
 from .forms import ClienteForm, PropiedadesForm, ContratoForm, ConvenioForm
 import os
+from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from io import BytesIO
 from datetime import datetime
 from django.conf import settings
+from xhtml2pdf import pisa
 import textwrap
 from PIL import Image
 from reportlab.pdfgen import canvas
@@ -630,3 +633,18 @@ def backup(request):
 
     else:
         return HttpResponseNotAllowed(["GET", "POST"])
+def generar_contrato_pdf(request, id_contrato):
+    contrato = get_object_or_404(Contrato, id_contrato=id_contrato)
+    template_path = 'contrato_pdf.html'  # El nombre de tu plantilla HTML
+    context = {'contrato': contrato}  # Contexto para la plantilla
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="contrato_{contrato.id_contrato}.pdf"'
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Hubo un error al generar el PDF <pre>' + html + '</pre>')
+    return response

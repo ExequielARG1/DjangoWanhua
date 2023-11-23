@@ -23,7 +23,7 @@
                         <p class="card-text"><strong>Contrato ID:</strong> {{ convenio.id_contrato.id_contrato }}</p>
                         <p class="card-text"><strong>Fecha de Inicio:</strong> {{ convenio.fecha_inicio }}</p>
                         <p class="card-text"><strong>Fecha de Fin:</strong> {{ convenio.fecha_fin }}</p>
-                        <p class="card-text"><strong>Descripción:</strong> {{ convenio.descripcion }}</p>
+                        <p class="card-text"><strong>Descripción:</strong> {{ convenio.descripcion|safe }}</p>
                     </div>
                 </div>
             </div>
