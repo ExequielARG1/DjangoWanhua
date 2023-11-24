@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from ckeditor.fields import RichTextField
 
 class Cliente(models.Model):
     dni = models.CharField(max_length=50, primary_key=True)
@@ -27,7 +28,7 @@ class Contrato(models.Model):
     propiedades = models.ForeignKey(Propiedades, on_delete=models.CASCADE)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
-    descripcion = models.TextField()
+    descripcion = RichTextField()
 
     def fecha_inicio_formatted(self):
         return self.fecha_inicio.strftime('%d/%m/%Y')
@@ -45,3 +46,32 @@ class Contrato(models.Model):
             self.fecha_fin = datetime.strptime(f'{year}-{month}-{day}', '%Y-%m-%d').date()
         
         super(Contrato, self).save(*args, **kwargs)
+    @property
+    def tiene_convenios(self):
+        return self.convenio_set.exists()
+
+class Convenio(models.Model):
+    id_convenio = models.AutoField(primary_key=True)
+    id_contrato = models.ForeignKey('Contrato', on_delete=models.CASCADE)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
+    descripcion = RichTextField()
+
+    def fecha_inicio_formatted(self):
+        return self.fecha_inicio.strftime('%d/%m/%Y')
+
+    def fecha_fin_formatted(self):
+        return self.fecha_fin.strftime('%d/%m/%Y')
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.fecha_inicio, str) and '/' in self.fecha_inicio:
+            self.fecha_inicio = datetime.datetime.strptime(self.fecha_inicio, '%d/%m/%Y').date()
+        if isinstance(self.fecha_fin, str) and '/' in self.fecha_fin:
+            self.fecha_fin = datetime.datetime.strptime(self.fecha_fin, '%d/%m/%Y').date()
+        
+        super(Convenio, self).save(*args, **kwargs)
+
+
+class BackupHistory(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    success = models.BooleanField(default=False)

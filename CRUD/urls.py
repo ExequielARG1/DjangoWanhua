@@ -7,7 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home"),
     path("signup/", views.signup, name="signup"),   
-    path("tasks/", views.tasks, name="tasks"),
     path("salir/", views.cerrar_sesion, name="cerrar_sesion"),
     path("login/", views.login_entrar, name="entrar_sesion"),
     path('clientes/', views.cliente_list, name='cliente_list'),
@@ -20,6 +19,8 @@ urlpatterns = [
     path('propiedades/<int:id>/delete/', views.propiedades_delete, name='propiedades_delete'),
     # En tu urls.py
 path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedades_clientes_todas'),
+    
+    path('contratos_clientes/', views.listar_todos_los_contratos, name='contratos_clientes'),
 
     path('contratos/', views.listar_contratos, name='listar_contratos'),
     path('contratos/cliente/<str:dni_cliente>/', views.listar_contratos, name='listar_contratos_cliente'),
@@ -27,7 +28,18 @@ path('propiedades-clientes/', views.propiedades_clientes_todas, name='propiedade
     path('contratos/actualizar/<int:id_contrato>/<str:dni_cliente>/', views.actualizar_contrato, name='actualizar_contrato'),
     path('contratos/eliminar/<int:id_contrato>/<str:dni_cliente>/', views.eliminar_contrato, name='eliminar_contrato'),
 
-    path('contratos/generar_pdf/<int:id_contrato>/', views.generar_contrato_pdf, name='generar_contrato_pdf'),
+
+    path('convenios_clientes/', views.listar_convenios_clientes, name='listar_convenios_clientes'),
+
+    path('convenios/listar/<int:id_contrato>/', views.listar_convenios, name='listar_convenios'),
+    path('convenios/crear/<int:id_contrato>/', views.crear_convenio, name='crear_convenio'),
+    path('convenios/editar/<int:id_convenio>/', views.editar_convenio, name='editar_convenio'),
+    path('convenios/eliminar/<int:id_convenio>/', views.eliminar_convenio, name='eliminar_convenio'),
+
+    path('backup/', views.backup, name='backup'),
+
+    path('contratos/pdf/<int:id_contrato>/', views.generar_contrato_pdf, name='generar_contrato_pdf'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

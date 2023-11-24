@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/full/ckeditor.js"></script>
+
+<!-- Asegúrate de que el ID aquí coincida con el ID del campo de texto en tu formulario -->
+<script>
+    $(document).ready(function() {
+        var descripcionId = 'id_descripcion'; // Asegúrate de cambiar esto al ID correcto
+        if (CKEDITOR.instances[descripcionId]) {
+            CKEDITOR.instances[descripcionId].destroy();
+        }
+        CKEDITOR.replace(descripcionId, {
+            toolbar: 'full',
+            height: 300,
+            width: '100%'
+        });
+    });
+</script>
+<div class="container mt-5">
+    <button onclick="history.back()" class="btn btn-success mb-3">
+        <i class="fas fa-arrow-left"></i> Volver Atrás
+    </button>
+<!-- Formulario de búsqueda -->
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" placeholder="Buscar..." value="{{ search_query }}">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+    </div>
+</form>
+
+    {% url 'crear_convenio' as crear_url %}
+    {% url 'editar_convenio' id_contrato=0 as base_editar_url %}
+    {% if request.resolver_match.url_name == 'crear_convenio' or request.resolver_match.url_name == 'editar_convenio' %}
+        <h3>{% if request.resolver_match.url_name == 'crear_convenio' %}Agregar Convenio{% else %}Editar Convenio{% endif %}</h3>
+        <form id="formConvenio" method="post" action="{% if convenio %}{% url 'editar_convenio' id_convenio=convenio.id_convenio %}{% else %}{% url 'crear_convenio' id_contrato=id_contrato %}{% endif %}">
+            {% csrf_token %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if field.name == 'id_contrato' %}
+                                <input type="text" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" value="{{ field.value }}" readonly>
+                            {% else %}
+                                {{ field|add_class:"form-control" }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="button" class="btn btn-primary" onclick="confirmSave()"><i class="fas fa-save"></i> {% if request.resolver_match.url_name == 'crear_convenio' %}Guardar{% else %}Actualizar{% endif %}</button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+
+    <h3 class="mt-5">Convenios Existentes</h3>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID Convenio</th>
+                <th>ID Contrato</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for convenio in convenios %}
+                <tr>
+                    <td>{{ convenio.id_convenio }}</td>
+                    <td>{{ convenio.id_contrato.id_contrato }}</td>
+                    <td>{{ convenio.fecha_inicio }}</td>
+                    <td>{{ convenio.fecha_fin }}</td>
+                    <td>{{ convenio.descripcion|safe }}</td>
+                    <td>
+                        
+                        <button type="button" class="btn btn-sm btn-info" onclick="showInfo('{{ convenio.descripcion }}')"><i class="fas fa-info-circle"></i> Descripción</button>
+                        <form id="delete-form-{{ convenio.id_convenio }}" action="{% url 'eliminar_convenio' convenio.id_convenio %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete('{{ convenio.id_convenio }}')"><i class="fas fa-trash-alt"></i></button>
+                            <a href="{% url 'editar_convenio' convenio.id_convenio %}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No hay convenios registrados.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Controles de paginación -->
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if convenios.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1&search={{ search_query|urlencode }}">Primero</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ convenios.previous_page_number }}&search={{ search_query|urlencode }}">Anterior</a></li>
+            {% endif %}
+            
+            <li class="page-item active"><span class="page-link">{{ convenios.number }}</span></li>
+            
+            {% if convenios.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ convenios.next_page_number }}&search={{ search_query|urlencode }}">Siguiente</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ convenios.paginator.num_pages }}&search={{ search_query|urlencode }}">Último</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+</div>
+
+<script>
+function confirmDelete(id_convenio) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + id_convenio).submit();
+        }
+    });
+    return false; // Evitar el submit automático del formulario
+}
+
+function confirmSave() {
+    Swal.fire({
+        title: '¿Guardar cambios?',
+        text: "Confirma si deseas guardar este convenio.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, guardar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('formConvenio').submit();
+        }
+    });
+    return false; // Evitar el submit automático del formulario
+}
+
+function showInfo(descripcion) {
+    Swal.fire({
+        title: 'Descripción del convenio',
+        text: descripcion,
+        icon: 'info'
+    });
+}
+</script>
+
+{% endblock %}

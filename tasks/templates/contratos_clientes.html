@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contratos de Clientes - Inmobiliaria Wanhua</title>
+    <!-- Añadir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background-color: #001f3f;  /* Azul oscuro marino */
+            color: white;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 10px;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            background-color: #001f3f;  /* Azul oscuro marino */
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .card-body {
+            background-color: white;
+        }
+        .pagination .page-link {
+            color: #001f3f; /* Azul oscuro marino */
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #001f3f; /* Azul oscuro marino */
+            border-color: #001f3f;
+        }
+    </style>
+</head>
+<body>
+
+        <!-- Navbar content aquí -->
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Contratos de Clientes - Inmobiliaria Wanhua</h1>
+         <!-- Formulario de búsqueda -->
+    <form method="get" action="" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Buscar por ID de contrato, DNI o nombre del cliente">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </form>
+        <div class="row">
+            {% for contrato in contratos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>Contrato ID:</strong> {{ contrato.id_contrato }}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Cliente:</strong> {{ contrato.nombre_cliente }}</p>
+                            <p class="card-text"><strong>DNI Cliente:</strong> {{ contrato.dni_cliente }}</p> <!-- Añadido DNI del Cliente -->
+                            <p class="card-text"><strong>Dirección Propiedad:</strong> {{ contrato.direccion_propiedad }}</p>
+                            <p class="card-text"><strong>Fecha Inicio:</strong> {{ contrato.fecha_inicio }}</p>
+                            <p class="card-text"><strong>Fecha Fin:</strong> {{ contrato.fecha_fin }}</p>
+                            <p class="card-text"><strong>Descripción:</strong> {{ contrato.descripcion|safe }}</p>
+                            {% if contrato.tiene_convenios %}
+                                <p class="card-text">Este contrato tiene convenios.</p>
+                            {% else %}
+                                <p class="card-text">Este contrato no tiene convenios.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Paginación aquí -->
+           <!-- Paginación -->
+<!-- Paginación simplificada -->
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                </li>
+            {% endif %}
+            
+            <li class="page-item active">
+                <span class="page-link">{{ page_obj.number }}</span>
+            </li>
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+</div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}

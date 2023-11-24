@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Administración de Propiedad</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            background-image: url('media/propiedades/logo1.png'); /* Logo como marca de agua */
+            background-size: 50%; /* Tamaño de la marca de agua */
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0; /* Elimina el margen predeterminado */
+            padding: 40px; /* Agrega espacio alrededor del contenido */
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1; /* Opacidad del logo como marca de agua */
+        }
+        .contract-details, .clauses {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .signature {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .signature p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="media/propiedades/logo1.png" alt="Logo de Inmobiliaria Wanhua" style="width: 200px; height: auto;">
+        </div>
+
+        <div class="header">
+            <h1>Contrato de Administración de Propiedad</h1>
+            <h2>Inmobiliaria Wanhua</h2>
+        </div>
+
+        <div class="contract-details">
+            <h4>Información del Contrato</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>ID Contrato:</strong> {{ contrato.id_contrato }}</p>
+                    <p><strong>Cliente:</strong> {{ contrato.cliente.nombre_cliente }}</p>
+                    <p><strong>DNI Cliente:</strong> {{ contrato.cliente.dni }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>ID Propiedad:</strong> {{ contrato.propiedades.ID_prop }}</p>
+                    <p><strong>Dirección Propiedad:</strong> {{ contrato.propiedades.direccion }}</p>
+                    <p><strong>Fecha Inicio:</strong> {{ contrato.fecha_inicio }}</p>
+                    <p><strong>Fecha Fin:</strong> {{ contrato.fecha_fin }}</p>
+                </div>
+            </div>
+            <p><strong>Descripción:</strong> {{ contrato.descripcion }}</p>
+        </div>
+
+        <div class="clauses">
+            <h4>Términos y Condiciones</h4>
+            <p class="section-title">1. Objeto del Contrato</p>
+            <p>Este contrato tiene como objeto regular la relación entre el propietario y la inmobiliaria Wanhua para la administración del inmueble ubicado en la dirección indicada.</p>
+            
+            <p class="section-title">2. Obligaciones del Propietario</p>
+            <p>El propietario se compromete a mantener el inmueble en condiciones óptimas de uso y a realizar las reparaciones necesarias para su conservación.</p>
+            
+            <p class="section-title">3. Servicios de la Inmobiliaria</p>
+            <p>La inmobiliaria se encargará de la gestión y administración del inmueble, incluyendo la búsqueda de inquilinos, el cobro de rentas y el mantenimiento general.</p>
+            
+            <!-- Añade más cláusulas según sea necesario -->
+        </div>
+
+        <div class="signature">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Firma del Propietario: _____________________________</p>
+                </div>
+                <div class="col-md-6">
+                    <p>Firma del Representante de Inmobiliaria Wanhua: _____________________________</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y jQuery (agregados para posibles funciones futuras) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
